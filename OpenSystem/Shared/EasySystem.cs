@@ -71,24 +71,7 @@ namespace Global {
         }
 #if USE_EASY_OBJECT
         public static void Crash(object? message = null, int exitCode = 1) {
-            ShowDetail = false;
-            ShowLineNumbers = false;
-            UseAnsiConsole = false;
-            Log("[!! PROGRAM CRASHED !!]");
-            if (message != null && !(message is Exception)) {
-                Log(message, "MESSAGE");
-            }
-            if (message is Exception e) {
-                Console.Error.WriteLine(e.ToString());
-                return;
-            }
-            string trace = Environment.StackTrace;
-            List<string> lines = TextToLines(trace);
-            lines = lines.Skip(3).ToList();
-            trace = "\n" + string.Join("\n", lines);
-            Log(trace, "STACK TRACE");
-            Log($"[!! ABORTING...WITH EXIT CODE {exitCode} !!]");
-            Environment.Exit(exitCode);
+            EasyObject.Crash(message, exitCode);
         }
 #endif
         public static Process? OpenUrl(string url) {
