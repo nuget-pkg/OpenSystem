@@ -13,6 +13,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+#if USE_EASY_OBJECT
+using static Global.EasyObject;
+#endif
 
 namespace Global {
 #if GLOBAL_SYS
