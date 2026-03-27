@@ -84,6 +84,7 @@ namespace Global {
             }
             string trace = Environment.StackTrace;
             List<string> lines = TextToLines(trace);
+            lines = lines.Skip(3).ToList();
             trace = "\n" + string.Join("\n", lines);
             Log(trace, "STACK TRACE");
             Log($"[!! ABORTING...WITH EXIT CODE {exitCode} !!]");
