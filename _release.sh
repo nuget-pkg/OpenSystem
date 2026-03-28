@@ -14,8 +14,8 @@ dotnet pack -o . -p:Configuration=Release
 
 tag="v$version"
 cd $cwd
-git-put -a "[⭕️COMMIT] $tag" || true
-git-tag-add "[⭕️RELEASE] $tag"
+git-put -a "[⭕️COMMIT] for tag: $tag" || true
+git-tag-add "$tag"
 cygpath -w `pwd`|clip.exe
 sleep 3
 git-go

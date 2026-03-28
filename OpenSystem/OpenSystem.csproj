@@ -2,7 +2,7 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <TargetFrameworks>net462;net8.0</TargetFrameworks>
-    <Version>2026.0328.1758.35</Version>
+    <Version>2026.0328.1800.32</Version>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <RootNamespace>OpenSystem</RootNamespace>
