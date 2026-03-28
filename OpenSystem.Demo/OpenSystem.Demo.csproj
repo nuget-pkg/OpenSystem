@@ -18,9 +18,6 @@
   <PropertyGroup>
     <DebugType>full</DebugType>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Demo.Program</StartupObject>
-  </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
