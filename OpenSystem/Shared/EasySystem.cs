@@ -69,11 +69,6 @@ namespace Global {
             string decodedString = enc.GetString(byteUtf32);
             return decodedString + ellipsis;
         }
-#if USE_EASY_OBJECT
-        public static void Crash(object? message = null, int exitCode = 1) {
-            EasyObject.Crash(message, exitCode);
-        }
-#endif
         public static Process? OpenUrl(string url) {
             ProcessStartInfo pi = new ProcessStartInfo() {
                 FileName = url,
@@ -532,22 +527,6 @@ namespace Global {
             string contents = await response.Content.ReadAsStringAsync();
             return contents;
         }
-#if USE_EASY_OBJECT
-        public static void DumpObjectAsJson(
-            object? x,
-            bool compact = false,
-            string newline = "\n",
-            bool keyAsSymbol = false,
-            bool removeSurrogatePair = false) {
-            string json = EasyObject.FromObject(x)
-                .ToJson(
-                indent: !compact,
-                keyAsSymbol: keyAsSymbol,
-                removeSurrogatePair: removeSurrogatePair
-                );
-            Console.Write(json + newline);
-        }
-#endif
         public static void Sleep(int milliseconds) {
             Thread.Sleep(milliseconds);
         }
@@ -563,5 +542,24 @@ namespace Global {
             List<string> lines = TextToLines(text);
             SaveAllLines(path, lines, "\n");
         }
+#if USE_EASY_OBJECT
+        public static void DumpObjectAsJson(
+            object? x,
+            bool compact = false,
+            string newline = "\n",
+            bool keyAsSymbol = false,
+            bool removeSurrogatePair = false) {
+            string json = EasyObject.FromObject(x)
+                .ToJson(
+                indent: !compact,
+                keyAsSymbol: keyAsSymbol,
+                removeSurrogatePair: removeSurrogatePair
+                );
+            Console.Write(json + newline);
+        }
+        public static void Crash(object? message = null, int exitCode = 1) {
+            EasyObject.Panic(message, exitCode);
+        }
+#endif
     }
 }
