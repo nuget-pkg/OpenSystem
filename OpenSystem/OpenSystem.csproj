@@ -2,7 +2,7 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <TargetFrameworks>net462;net8.0</TargetFrameworks>
-    <Version>2026.0328.2036.51</Version>
+    <Version>2026.0329.0538.11</Version>
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <RootNamespace>OpenSystem</RootNamespace>
@@ -55,6 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.5" />
-    <PackageReference Include="UniversalEncoding" Version="2026.328.2018.21" />
+    <PackageReference Include="UniversalEncoding" Version="2026.329.520.34" />
   </ItemGroup>
 </Project>
