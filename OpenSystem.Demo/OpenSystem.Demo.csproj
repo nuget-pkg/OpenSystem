@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
     <LangVersion>latest</LangVersion>
     <TargetFrameworks>net462;net10.0</TargetFrameworks>
     <Nullable>enable</Nullable>
@@ -11,9 +12,6 @@
     <NoWarn></NoWarn>
     <Authors>JavaCommons</Authors>
     <Company>JavaCommons Technologies</Company>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup>
     <DebugType>full</DebugType>
