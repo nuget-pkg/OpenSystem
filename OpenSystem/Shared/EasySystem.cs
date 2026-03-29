@@ -13,15 +13,25 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+
+// ReSharper disable RedundantArgumentDefaultValue
+
+// ReSharper disable AccessToStaticMemberViaDerivedType
+
+// ReSharper disable InconsistentNaming
+
+// ReSharper disable EmptyGeneralCatchClause
 #if USE_EASY_OBJECT
 using static Global.EasyObject;
 #endif
 
+// ReSharper disable once CheckNamespace
 namespace Global
 {
 #if GLOBAL_SYS
     public static partial class Sys {
 #else
+    // ReSharper disable once PartialTypeWithSinglePart
     public static partial class EasySystem
     {
 #endif
@@ -36,13 +46,13 @@ namespace Global
 #endif
         }
 
-        public static void ConsoleClearCurrentLine()
-        {
-            int currentLine = Console.CursorTop;
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, currentLine);
-        }
+        // public static void ConsoleClearCurrentLine()
+        // {
+        //     int currentLine = Console.CursorTop;
+        //     Console.SetCursorPosition(0, Console.CursorTop);
+        //     Console.Write(new string(' ', Console.WindowWidth));
+        //     Console.SetCursorPosition(0, currentLine);
+        // }
 
         public static string ProfilePath()
         {
@@ -126,7 +136,6 @@ namespace Global
                         }
                         catch
                         {
-                            ;
                         }
                     }
 
@@ -139,7 +148,6 @@ namespace Global
                         }
                         catch
                         {
-                            ;
                         }
                     }
                 }
@@ -149,7 +157,7 @@ namespace Global
                 }
             }
 
-            return zipout!;
+            return zipout;
         }
 
         public static void Exit(int exitCoed)
@@ -213,7 +221,7 @@ namespace Global
             path = CygpathWindows(path);
             if (!SilentFlag)
             {
-                System.Console.Error.WriteLine($"SetCwd(): {path}");
+                Console.Error.WriteLine($"SetCwd(): {path}");
             }
 
             Prepare(path);
@@ -261,7 +269,7 @@ namespace Global
             ProcessStartInfo processStartInfo;
             Process process;
             outputBuilder = new StringBuilder();
-            processStartInfo = new ProcessStartInfo()!;
+            processStartInfo = new ProcessStartInfo();
             processStartInfo.StandardOutputEncoding = encoding;
             processStartInfo.CreateNoWindow = true;
             processStartInfo.RedirectStandardOutput = true;
@@ -274,18 +282,15 @@ namespace Global
                 StartInfo = processStartInfo,
                 EnableRaisingEvents = true
             };
-            process.OutputDataReceived += new DataReceivedEventHandler
-            (
-                delegate(object sender, DataReceivedEventArgs e)
+            process.OutputDataReceived += delegate(object _, DataReceivedEventArgs e)
+            {
+                if (!SilentFlag)
                 {
-                    if (!SilentFlag)
-                    {
-                        Console.Error.WriteLine(e.Data);
-                    }
-
-                    outputBuilder.Append(e.Data + "\n");
+                    Console.Error.WriteLine(e.Data);
                 }
-            );
+
+                outputBuilder.Append(e.Data + "\n");
+            };
             process.Start();
             process.BeginOutputReadLine();
             process.WaitForExit();
@@ -315,9 +320,9 @@ namespace Global
                 return Path.GetFullPath(exe);
             }
 
-            string PATH = Environment.GetEnvironmentVariable("PATH") ?? "";
-            PATH = $"{cwd};{PATH}";
-            foreach (string test in PATH.Split(';'))
+            string pathList = Environment.GetEnvironmentVariable("PATH") ?? "";
+            pathList = $"{cwd};{pathList}";
+            foreach (string test in pathList.Split(';'))
             {
                 string path = test.Trim();
                 if (!string.IsNullOrEmpty(path) && File.Exists(Path.Combine(path, exe)))
@@ -338,7 +343,8 @@ namespace Global
         public static string? FindExePath(string exe, Assembly assembly)
         {
             int bit = IntPtr.Size * 8;
-            string cwd = AssemblyDirectory(assembly);
+            string? cwd = AssemblyDirectory(assembly);
+            if (cwd == null) return null;
             string? result = FindExePath(exe, cwd);
             if (result == null)
             {
@@ -353,11 +359,12 @@ namespace Global
             return result;
         }
 
-        public static string AssemblyDirectory(Assembly assembly)
+        public static string? AssemblyDirectory(Assembly assembly)
         {
 #pragma warning disable SYSLIB0012
-            string codeBase = assembly.CodeBase!;
+            string? codeBase = assembly.CodeBase;
 #pragma warning restore SYSLIB0012
+            if (codeBase == null) return null;
             UriBuilder uri = new UriBuilder(codeBase);
             string path = Uri.UnescapeDataString(uri.Path);
             return Path.GetDirectoryName(path)!;
@@ -519,10 +526,10 @@ namespace Global
                 }
             }
 
-            process.OutputDataReceived += (sender, e) => { Console.WriteLine(e.Data); };
-            process.ErrorDataReceived += (sender, e) => { Console.Error.WriteLine(e.Data); };
+            process.OutputDataReceived += (_, e) => { Console.WriteLine(e.Data); };
+            process.ErrorDataReceived += (_, e) => { Console.Error.WriteLine(e.Data); };
             process.Start();
-            Console.CancelKeyPress += delegate(object sender, ConsoleCancelEventArgs e) { process.Kill(); }!;
+            Console.CancelKeyPress += delegate { process.Kill(); };
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             process.WaitForExit();
@@ -531,14 +538,14 @@ namespace Global
             return process.ExitCode;
         }
 
-        public static byte[]? ToUtf8Bytes(string s)
+        public static byte[]? ToUtf8Bytes(string? s)
         {
             if (s is null)
             {
                 return null;
             }
 
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(s);
+            byte[] bytes = Encoding.UTF8.GetBytes(s);
             return bytes;
         }
 
@@ -559,11 +566,17 @@ namespace Global
             destinationPath = CygpathWindows(destinationPath);
             PrepareForFile(destinationPath);
 #pragma warning disable SYSLIB0014
+            // ReSharper disable once RedundantNameQualifier
             WebRequest objRequest = System.Net.HttpWebRequest.Create(url);
 #pragma warning restore SYSLIB0014
             WebResponse objResponse = objRequest.GetResponse();
             byte[] buffer = new byte[32768];
-            using Stream input = objResponse.GetResponseStream();
+            using Stream? input = objResponse.GetResponseStream();
+            if (input == null)
+            {
+                return;
+            }
+
             using FileStream output = new FileStream(destinationPath, FileMode.CreateNew);
             int bytesRead;
             while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
@@ -670,7 +683,6 @@ namespace Global
             foreach (string x in relatives)
             {
                 string relative = SafeBaseName(x);
-                ;
                 result = Path.Combine(result, relative);
             }
 
@@ -690,7 +702,6 @@ namespace Global
             foreach (string x in relatives)
             {
                 string relative = SafeBaseName(x);
-                ;
                 result = Path.Combine(result, relative);
             }
 
@@ -710,7 +721,6 @@ namespace Global
             foreach (string x in relatives)
             {
                 string relative = SafeBaseName(x);
-                ;
                 result = Path.Combine(result, relative);
             }
 
@@ -730,7 +740,6 @@ namespace Global
             foreach (string x in relatives)
             {
                 string relative = SafeBaseName(x);
-                ;
                 result = Path.Combine(result, relative);
             }
 
