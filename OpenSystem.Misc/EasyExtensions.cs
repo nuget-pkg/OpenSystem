@@ -1,4 +1,5 @@
-﻿namespace Global;
+﻿#if false
+namespace Global;
 
 using System;
 using System.IO;
@@ -60,3 +61,4 @@ public static class EasyExtensions
         }
     }
 }
+#endif
