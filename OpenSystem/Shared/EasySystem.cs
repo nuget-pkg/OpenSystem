@@ -199,7 +199,7 @@ namespace Global {
             path = CygpathWindows(path);
             return Path.GetFileNameWithoutExtension(Path.GetFileName(path));
         }
-        public static bool LaunchProcess(string exePath, string[] args, Dictionary<string, string>? vars = null) {
+        public static Process? LaunchProcess(string exePath, string[] args, Dictionary<string, string>? vars = null) {
             exePath = CygpathWindows(exePath);
             var argList = "";
             for (var i = 0; i < args.Length; i++) {
@@ -220,7 +220,8 @@ namespace Global {
                 foreach (var key in vars.Keys)
                     process.StartInfo.EnvironmentVariables[key] = vars[key];
             var result = process.Start();
-            return result;
+            if (!result) return null;
+            return process;
         }
         public static string GetProcessStdout(Encoding encoding, string exe, params string[] args) {
             string cmdArgs = "";
