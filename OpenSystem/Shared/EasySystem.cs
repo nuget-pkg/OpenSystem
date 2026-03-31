@@ -27,6 +27,7 @@ using static Global.EasyObject;
 
 // ReSharper disable once CheckNamespace
 namespace Global;
+using static Global.EasyObjectClassic;
 #if GLOBAL_SYS
 public static partial class Sys {
 #else
@@ -237,6 +238,7 @@ public static partial class EasySystem {
         outputBuilder = new StringBuilder();
         processStartInfo = new ProcessStartInfo();
         processStartInfo.StandardOutputEncoding = encoding;
+        processStartInfo.StandardErrorEncoding = encoding;
         processStartInfo.CreateNoWindow = true;
         processStartInfo.RedirectStandardOutput = true;
         processStartInfo.RedirectStandardInput = true;
@@ -306,11 +308,11 @@ public static partial class EasySystem {
         try {
             IEnumerable<string> exeFiles =
                 Directory.EnumerateFiles(rootDirectory, "*.exe", SearchOption.AllDirectories);
-            Console.WriteLine($"EXE files found under {rootDirectory}:");
+            //Debug(exeFiles, title: "files");
             foreach (string file in exeFiles) {
-                Console.WriteLine(file);
-                EasyObjectClassic.Debug(file);
-                string baseName = EasySystem.SafeBaseName(file);
+                //Debug(file);
+                string baseName = EasySystem.GetBaseName(file, strongAlgorithm: true);
+                //Debug(baseName, title: "baseName");
                 if (string.Equals(baseName, exeName, StringComparison.CurrentCultureIgnoreCase)) {
                     return file;
                 }
@@ -419,7 +421,8 @@ public static partial class EasySystem {
         ptr.Value = StringToUTF8Addr(s);
         return ptr.Value;
     }
-    public static int RunToConsole(string exePath, string[] args, Dictionary<string, string>? vars = null) {
+    public static int RunToConsole(Encoding encoding, string exePath, string[] args,
+        Dictionary<string, string>? vars = null) {
         exePath = CygpathWindows(exePath);
         string argList = "";
         for (int i = 0; i < args.Length; i++) {
@@ -434,6 +437,8 @@ public static partial class EasySystem {
             }
         }
         Process process = new Process();
+        process.StartInfo.StandardOutputEncoding = encoding;
+        process.StartInfo.StandardErrorEncoding = encoding;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.RedirectStandardError = true;
         process.StartInfo.UseShellExecute = false;

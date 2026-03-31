@@ -1,5 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System.Collections.Generic;
+using System.Text;
 //using Newtonsoft.Json.Linq;
 namespace Misc;
 using Global;
@@ -10,7 +11,7 @@ public class Misc01 {
         //Setup
         DebugOutput = true;
         //Log("⭕️ハロー©⭕️");
-        Global.EasySystem.RunToConsole("bash", ["-c", "ls -ltr"]);
+        Global.EasySystem.RunToConsole(Encoding.UTF8, "bash", ["-c", "ls -ltr"]);
         var gvim = EasySystem.FindExeRecursive(@"C:\Program Files\Vim", "gvim.exe");
         Log(gvim, title: "gvim");
     }
