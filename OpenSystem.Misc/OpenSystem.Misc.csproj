@@ -28,7 +28,7 @@
         <Reference Include="System.Xml.Linq" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="EasyObjectClassic" Version="*" />
+        <PackageReference Include="EasyObjectClassic" Version="2026.331.2223.35" />
 		<!--
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		-->
