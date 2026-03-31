@@ -238,7 +238,7 @@ public static partial class EasySystem {
         outputBuilder = new StringBuilder();
         processStartInfo = new ProcessStartInfo();
         processStartInfo.StandardOutputEncoding = encoding;
-        processStartInfo.StandardErrorEncoding = encoding;
+        ////processStartInfo.StandardErrorEncoding = encoding;
         processStartInfo.CreateNoWindow = true;
         processStartInfo.RedirectStandardOutput = true;
         processStartInfo.RedirectStandardInput = true;
@@ -438,7 +438,7 @@ public static partial class EasySystem {
         }
         Process process = new Process();
         process.StartInfo.StandardOutputEncoding = encoding;
-        process.StartInfo.StandardErrorEncoding = encoding;
+        ////process.StartInfo.StandardErrorEncoding = encoding;
         process.StartInfo.RedirectStandardOutput = true;
         process.StartInfo.RedirectStandardError = true;
         process.StartInfo.UseShellExecute = false;
