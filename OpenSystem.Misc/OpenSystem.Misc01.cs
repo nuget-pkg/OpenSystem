@@ -1,22 +1,17 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+//using Newtonsoft.Json.Linq;
 namespace Misc;
 using Global;
-using static Global.EasyObject;
 using static Global.EasySystem;
+using static Global.EasyObjectClassic;
 public class Misc01 {
     public static void Main(string[] args) {
-        SetupConsoleEncoding();
-        ShowLineNumbers = false;
-        ShowDetail = true;
-        UseAnsiConsole = true;
+        //Setup
         DebugOutput = true;
-        Log("⭕️ハロー©⭕️");
-        EasySystem.RunToConsole("bash", ["-c", "ls -ltr"]);
-        var exe = EasySystem.FindExePath("Notepad++.exe");
-        Log(exe);
-        if (exe != null)
-            EasySystem.RunToConsole(exe, [@"C:\home17\+sub\nuget.org\OpenSystem\build", "-n3"]);
+        //Log("⭕️ハロー©⭕️");
+        Global.EasySystem.RunToConsole("bash", ["-c", "ls -ltr"]);
+        var gvim = EasySystem.FindExeRecursive(@"C:\Program Files\Vim", "gvim.exe");
+        Log(gvim, title: "gvim");
     }
 }

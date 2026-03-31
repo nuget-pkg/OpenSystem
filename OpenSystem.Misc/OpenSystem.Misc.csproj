@@ -28,8 +28,10 @@
         <Reference Include="System.Xml.Linq" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="EasyObject" Version="2026.331.1903.44" />
+        <PackageReference Include="EasyObjectClassic" Version="*" />
+		<!--
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		-->
     </ItemGroup>
     <ItemGroup>
         <Content Include="assets\**">
@@ -37,5 +39,8 @@
             <TargetPath>assets\%(RecursiveDir)\%(Filename)%(Extension)</TargetPath>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\OpenSystem\OpenSystem.csproj" />
     </ItemGroup>
 </Project>
