@@ -60,7 +60,7 @@ class EasyPartialHTTPStream : Stream, IDisposable {
 #else
     public EasyPartialHTTPStream(string url) {
 #endif
-        var m = EasySystem.FindFirstMatch(
+        var m = OpenSystem.FindFirstMatch(
             url,
             @"^(https://github[.]com/[^/]+/[^/]+/)blob(/.+)$",
             @"^(https://gitlab[.]com/nuget-tools/nuget-assets/-/)blob(/.+)$"

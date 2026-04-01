@@ -27,12 +27,12 @@ using static Global.EasyObject;
 
 // ReSharper disable once CheckNamespace
 namespace Global;
-using static Global.EasyObjectClassic;
+//using static Global.EasyObjectClassic;
 #if GLOBAL_SYS
 public static partial class Sys {
 #else
 // ReSharper disable once PartialTypeWithSinglePart
-public static partial class EasySystem {
+public static partial class OpenSystem {
 #endif
     public static bool SilentFlag = false;
     public static bool IsWindowsPlatform() {
@@ -43,13 +43,6 @@ public static partial class EasySystem {
 #endif
     }
 
-    // public static void ConsoleClearCurrentLine()
-    // {
-    //     int currentLine = Console.CursorTop;
-    //     Console.SetCursorPosition(0, Console.CursorTop);
-    //     Console.Write(new string(' ', Console.WindowWidth));
-    //     Console.SetCursorPosition(0, currentLine);
-    // }
     public static string ProfilePath() {
         return Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
             .Replace('/', Path.DirectorySeparatorChar);
@@ -126,10 +119,10 @@ public static partial class EasySystem {
         }
         return zipout;
     }
-    public static void Exit(int exitCoed) {
-        Console.Error.Write($"Exit() was called with exitCode: {exitCoed}." + "\n");
-        Environment.Exit(exitCoed);
-    }
+    //public static void Exit(int exitCoed) {
+    //    Console.Error.Write($"Exit() was called with exitCode: {exitCoed}." + "\n");
+    //    Environment.Exit(exitCoed);
+    //}
     public static string? FindHome(DirectoryInfo dir) {
         FileInfo[] files = dir.GetFiles();
         foreach (FileInfo file in files) {
@@ -311,7 +304,7 @@ public static partial class EasySystem {
             //Debug(exeFiles, title: "files");
             foreach (string file in exeFiles) {
                 //Debug(file);
-                string baseName = EasySystem.GetBaseName(file, strongAlgorithm: true);
+                string baseName = OpenSystem.GetBaseName(file, strongAlgorithm: true);
                 //Debug(baseName, title: "baseName");
                 if (string.Equals(baseName, exeName, StringComparison.CurrentCultureIgnoreCase)) {
                     return file;
@@ -632,6 +625,31 @@ public static partial class EasySystem {
         List<string> lines = TextToLines(text);
         SaveAllLines(path, lines, "\n");
     }
+    public static byte[] ReadFileHeadBytes(string path, int maxSize)
+    {
+        path = CygpathWindows(path);
+        var fs = new FileStream(
+            path,
+            FileMode.Open,
+            FileAccess.Read);
+        var array = new byte[maxSize];
+        var size = fs.Read(array, 0, array.Length);
+        fs.Close();
+        var result = new byte[size];
+        Array.Copy(array, 0, result, 0, result.Length);
+        return result;
+    }
+
+    public static bool IsBinaryFile(string path)
+    {
+        var head = ReadFileHeadBytes(path, 8000);
+        for (var i = 0; i < head.Length; i++)
+            if (head[i] == 0)
+                return true;
+
+        return false;
+    }
+
 #if USE_EASY_OBJECT
         public static void DumpObjectAsJson(
             object? x,
