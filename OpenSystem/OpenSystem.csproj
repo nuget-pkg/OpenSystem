@@ -2,7 +2,7 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
         <TargetFrameworks>net462;net8.0</TargetFrameworks>
-        <Version>2026.0401.0904.48</Version>
+        <Version>2026.0401.0907.49</Version>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <RootNamespace>OpenSystem</RootNamespace>
@@ -54,7 +54,6 @@
         <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="EasyObjectClassic" Version="2026.331.2223.35" />
         <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.5" />
         <PackageReference Include="UniversalEncoding" Version="2026.329.520.34" />
     </ItemGroup>
